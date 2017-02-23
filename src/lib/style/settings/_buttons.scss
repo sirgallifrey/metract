@@ -1,0 +1,7 @@
+$defaultButtonColor: map-get($colors, 'blue');
+$defaultButtonBorderWidth: 0;
+
+$buttonThemes: (
+    'danger': map-get($colors, 'red') white,
+    'warning': map-get($colors, 'yellow') white
+);

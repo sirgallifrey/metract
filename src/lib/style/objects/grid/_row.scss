@@ -1,0 +1,31 @@
+.row, .row:after, .row:before {
+    box-sizing: border-box;
+}
+
+/* Clearfix */
+.row {
+  *zoom: 1;
+}
+.row:before, .row:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.row:after {
+  clear: both;
+}
+
+.row {
+  /* ul/li compatibility */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Nested grid */
+.row > .row {
+  clear: none;
+  float: left;
+  /*TODO: check if this is necessary */
+  margin: 0 !important;
+}

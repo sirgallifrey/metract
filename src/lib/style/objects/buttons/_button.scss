@@ -1,0 +1,51 @@
+@mixin buttonThemeMixin ($name, $bgColor, $color) {
+    .button--theme-#{$name} {
+        background-color: $bgColor;
+        border-color: darken($bgColor, 15%);
+        color: $color;
+        &:active {
+            background-color: darken($bgColor, 8%);
+        }
+        &:focus {
+            outline: 0;
+            box-shadow: $defaultOutline;
+        }
+        &:active:focus {
+            box-shadow: map-get($shadowsInset, 2), $defaultOutline;
+        }
+    }
+}
+
+.button {
+    background-color: $defaultButtonColor;
+    padding: toRem(map-get($spacings , 1 )) toRem(map-get($spacings , 2 ));
+    border-radius: $defaultBorderRadius;
+    border-color: darken($defaultButtonColor, 15%);
+    border-style: solid;
+    border-width: $defaultButtonBorderWidth;
+    color: white;
+    &:active {
+        background-color: darken($defaultButtonColor, 8%);
+        box-shadow: map-get($shadowsInset, 2);
+    }
+    &:focus {
+        outline: 0;
+        box-shadow: 0 0 0.01pt 1px darken($defaultButtonColor, 25%);
+    }
+    &:active:focus {
+        box-shadow: map-get($shadowsInset, 2), 0 0 0.01pt 1px darken($defaultButtonColor, 25%);
+    }
+}
+
+@each $name, $value in $buttonThemes {
+    @include buttonThemeMixin($name, nth($value, 1), nth($value, 2));
+}
+
+.button--big {
+    font-size: 1.25rem;
+    padding: toRem(map-get($spacings , 2 )) toRem(map-get($spacings , 3 ));
+}
+
+.button--block {
+    width: 100%;
+}
