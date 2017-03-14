@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import { themed } from '../../Theme';
 
 export const getStyles = (conf, utils, css) => {
 
@@ -64,29 +65,23 @@ export const getStyles = (conf, utils, css) => {
     return button;
 };
 
-const Button = (props, context) => {
+const Button = themed('Button', getStyles)((props, context, rules) => {
 
-    const {className, color, big, block, ...rest} = props;
-    //TODO: make a memoized function or something less ugly
+    const { className, color, big, block, ...rest } = props;
+
     let _classNames = classNames({
-        [context.MetractTheme.rules.Button.default]: true,
-        [context.MetractTheme.rules.Button.colors[props.color]]: color,
-        [context.MetractTheme.rules.Button.big]: big,
-        [context.MetractTheme.rules.Button.block]: block,
+        [rules.default]: true,
+        [rules.colors[props.color]]: color,
+        [rules.big]: big,
+        [rules.block]: block,
         className
     });
-    
+
     return (
         <button className={_classNames} {...rest}>
             {props.children}
         </button>
     );
-};
-
-//TODO: make a decorator please :D
-Button.contextTypes = {
-
-    MetractTheme: React.PropTypes.object
-}
+});
 
 export default Button;
