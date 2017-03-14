@@ -6,10 +6,11 @@
     "node-sass": "^4.5.0",
     "normalize.css": "^5.0.0",
     "npm-run-all": "^4.0.1",
-    "react-scripts": "0.9.0"
+    "react-scripts": "0.9.5"
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "glamor": "^2.20.24",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   },
@@ -17,8 +18,8 @@
     "build-css": "node-sass src/lib/style/ -o public/css --include-path ./node_modules/normalize.css/",
     "watch-css": "npm run build-css && node-sass src/lib/style/ -o public/css --watch --include-path ./node_modules/normalize.css/",
     "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
-    "build": "npm run build-css && react-scripts build",
+    "start": "react-scripts start",
+    "build": "npm run react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

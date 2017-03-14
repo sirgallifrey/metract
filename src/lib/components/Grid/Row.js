@@ -1,5 +1,5 @@
 import React from 'react';
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 const style = {
     'row': true        
@@ -8,6 +8,6 @@ const style = {
 export default (props) => {
 
     return (
-        <div className={classnames(style, props.className)}>{props.children}</div>
+        <div className={classNames(style, props.className)}>{props.children}</div>
     );
 };

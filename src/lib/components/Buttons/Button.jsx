@@ -1,19 +1,92 @@
 import React from 'react';
-import classnames from 'classnames';
+import classNames from 'classnames';
 
-export default (props) => {
+export const getStyles = (conf, utils, css) => {
 
-    const styles = {
-        'button': true,
-        'button--big': props.big || false,
-        'button--block': props.block || false,
-        'button--theme-danger': props.theme === 'danger',
-        'button--theme-warning': props.theme === 'warning'
-    }
+    const button = {};
 
+    button.default = css({
+        'backgroundColor': conf.defaults.Button.bgColor,
+        'padding': `${conf.spacings['1']/conf.defaults.fontSize}rem ${conf.spacings['2']/conf.defaults.fontSize}rem`,
+        'borderRadius': conf.defaults.borderRadius,
+        'borderColor': conf.defaults.Button.borderColor,
+        'borderStyle': 'solid',
+        'borderWidth': conf.defaults.Button.borderWidth,
+        'color': conf.defaults.Button.color,
+        '&:focus': {
+            'outline': 'none',
+            'boxShadow': `0 0 0.01pt 1px ${utils.shadeColor(conf.defaults.Button.bgColor, -0.25)}`,
+        },
+        '&:active': {
+            'backgroundColor': utils.shadeColor(conf.defaults.Button.bgColor, -0.08),
+            'boxShadow': `0 0 0.01pt 1px ${utils.shadeColor(conf.defaults.Button.bgColor, -0.25)}`,
+            'outline': 'none'
+        },
+        '&:active:focus': {
+            'boxShadow': `${conf.shadowsInset['2']}, 0 0 0.01pt 1px ${utils.shadeColor(conf.defaults.Button.bgColor, -0.25)}`,
+            'outline': 'none'
+        }
+    });
+
+    const buttonColorMixin = (bgColor, color) => ({
+        'backgroundColor': bgColor,
+        'borderColor': utils.shadeColor(bgColor, -0.15),
+        'color': color,
+        '&:active': {
+            'backgroundColor': utils.shadeColor(bgColor, -0.15)
+        },
+        '&:focus': {
+            'outline': 0,
+            'boxShadow': conf.defaults.outline
+        },
+        '&:active:focus': {
+            'boxShadow': `${conf.shadowsInset['2']}, 0 0 0.01pt 1px ${utils.shadeColor(bgColor, -0.25)}`,
+        }
+    });
+
+    //TODO: font size and padding could come from configs also
+    button.big = css({
+        'fontSize': '1.25rem',
+        'padding': `${conf.spacings['2']/conf.defaults.fontSize}rem ${conf.spacings['3']/conf.defaults.fontSize}rem`,
+    });
+
+    button.block = css({
+        'width': '100%'
+    });
+    
+    button.colors = {};
+    Object.keys(conf.defaults.Button.colors).forEach((name) => {
+
+        const def = conf.defaults.Button.colors[name];
+        button.colors[name] = css(buttonColorMixin(def.bgColor, def.color));
+    });
+
+    return button;
+};
+
+const Button = (props, context) => {
+
+    const {className, color, big, block, ...rest} = props;
+    //TODO: make a memoized function or something less ugly
+    let _classNames = classNames({
+        [context.MetractTheme.rules.Button.default]: true,
+        [context.MetractTheme.rules.Button.colors[props.color]]: color,
+        [context.MetractTheme.rules.Button.big]: big,
+        [context.MetractTheme.rules.Button.block]: block,
+        className
+    });
+    
     return (
-        <button className={classnames(styles, props.className)} onClick={props.onClick}>
+        <button className={_classNames} {...rest}>
             {props.children}
         </button>
     );
+};
+
+//TODO: make a decorator please :D
+Button.contextTypes = {
+
+    MetractTheme: React.PropTypes.object
 }
+
+export default Button;
