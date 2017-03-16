@@ -8,7 +8,6 @@ export default class {
     constructor(config) {
 
         this.config = config || new Config();
-
         this.rules = {};
     }
 
@@ -18,6 +17,11 @@ export default class {
             return this.rules[key];
         }
         this.rules[key] = getStylesFn(this.config, StyleUtils, css);
+        return this.rules[key];
+    }
+
+    getRules(key) {
+
         return this.rules[key];
     }
 }

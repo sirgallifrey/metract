@@ -8,7 +8,7 @@ class App extends Component {
       <Provider theme={new Theme()}>
         <div className="App">
           <Row>
-            <Col xs='3' l='3' m='2'><Button block={true}>Click me</Button></Col>
+            <Col xxs='6' xs='3' l='3' m='2'><Button block={true}>Click me</Button></Col>
             <Col xs='3' l='3' m='2'><Button big={true}>Click me</Button></Col>
             <Col xs='3' l='3' m='2'><Button color='danger'>Click me</Button></Col>
             <Col xs='3' l='3' m='2'><Button color='warning'>Click me</Button></Col>

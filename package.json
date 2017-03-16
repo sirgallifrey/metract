@@ -1,9 +1,8 @@
 {
   "name": "metract",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "devDependencies": {
-    "node-sass": "^4.5.0",
     "normalize.css": "^5.0.0",
     "npm-run-all": "^4.0.1",
     "react-scripts": "0.9.5"
@@ -15,8 +14,6 @@
     "react-dom": "^15.4.2"
   },
   "scripts": {
-    "build-css": "node-sass src/lib/style/ -o public/css --include-path ./node_modules/normalize.css/",
-    "watch-css": "npm run build-css && node-sass src/lib/style/ -o public/css --watch --include-path ./node_modules/normalize.css/",
     "start-js": "react-scripts start",
     "start": "react-scripts start",
     "build": "npm run react-scripts build",

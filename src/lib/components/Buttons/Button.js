@@ -65,15 +65,15 @@ export const getStyles = (conf, utils, css) => {
     return button;
 };
 
-const Button = themed('Button', getStyles)((props, context, rules) => {
+const Button = themed('Button', getStyles)((props) => {
 
     const { className, color, big, block, ...rest } = props;
 
     let _classNames = classNames({
-        [rules.default]: true,
-        [rules.colors[props.color]]: color,
-        [rules.big]: big,
-        [rules.block]: block,
+        [props.rules.default]: true,
+        [props.rules.colors[props.color]]: color,
+        [props.rules.big]: big,
+        [props.rules.block]: block,
         className
     });
 

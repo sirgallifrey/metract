@@ -1,22 +1,50 @@
 import React from 'react';
 import classnames from 'classnames';
+import { themed } from '../../Theme';
 
-export default (props) => {
+export const getStyles = (conf, util, css) => {
 
-    const style = {
-        'row__col': true,        
-        [`row__col--${props.size}`]: typeof props.size !== undefined
-    };
+    const rules = {};
 
-    ['l', 'm', 's', 'xs'].forEach((bp) => {
-
-        if (props[bp]) {
-            style[`row__col--${bp}-${props[bp]}`] = true;
+    rules.col = css({
+        float: 'left',
+        width: '100%',
+        paddingLeft: `${conf.spacings[2] / conf.defaults.fontSize}rem`,
+        paddingRigth: `${conf.spacings[2] / conf.defaults.fontSize}rem`,
+        userSelect: 'none',
+        '&, &:after, &:before': {
+            boxSizing: 'border-box'
         }
     });
+
+    rules.breakpoints = {};
+    Object.keys(conf.breakpoints).forEach((bp) => {
+
+        rules.breakpoints[bp] = {};
+        for (let i = 1; i <= conf.grid.base; i ++ ) {
+
+            rules.breakpoints[bp][i] = css({
+                [`@media(min-width: ${conf.breakpoints[bp]}px)`]: {
+                    width: `${(i / conf.grid.base) * 100}%`
+                }
+            });
+        }
+
+    });
+    return rules;
+}
+
+export default themed('Col', getStyles)((props) => {
     
+    const breakpoints = {};
+    ['l', 'm', 's', 'xs', 'xxs'].forEach((bp) => {
+
+        if (props[bp]) {
+            breakpoints[props.rules.breakpoints[bp][props[bp]].toString() ] = true;
+        }
+    });
 
     return (
-        <div className={classnames(style, props.className)}>{props.children}</div>
+        <div className={classnames(props.rules.col.toString(), breakpoints, props.className)}>{props.children}</div>
     );
-};
+});

@@ -5,6 +5,7 @@ export default class {
     constructor() {
 
         this.breakpoints = {
+            xxs: 0,
             xs: 576,
             s: 768,
             m: 992,
