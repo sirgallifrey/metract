@@ -2,15 +2,16 @@ import React from 'react';
 import classnames from 'classnames';
 import { themed } from '../../Theme';
 
-export const getStyles = (conf, util, css) => {
+export const getStyles = (conf, css, util) => {
 
     const rules = {};
 
     rules.col = css({
         float: 'left',
         width: '100%',
-        paddingLeft: `${conf.spacings[2] / conf.defaults.fontSize}rem`,
-        paddingRigth: `${conf.spacings[2] / conf.defaults.fontSize}rem`,
+        minHeight: '1px',
+        paddingLeft: `${conf.grid.cellPadding / conf.defaults.fontSize}rem`,
+        paddingRight: `${conf.grid.cellPadding / conf.defaults.fontSize}rem`,
         userSelect: 'none',
         '&, &:after, &:before': {
             boxSizing: 'border-box'
@@ -44,7 +45,10 @@ export default themed('Col', getStyles)((props) => {
         }
     });
 
+    const { rules, className, l, m, s, xs, xxs, ...rest } = props;
     return (
-        <div className={classnames(props.rules.col.toString(), breakpoints, props.className)}>{props.children}</div>
+        <div className={classnames(props.rules.col.toString(), breakpoints, props.className)} {...rest}>
+            {props.children}
+            </div>
     );
 });

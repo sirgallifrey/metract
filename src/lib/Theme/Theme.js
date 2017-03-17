@@ -16,7 +16,7 @@ export default class {
         if (this.rules[key]) {
             return this.rules[key];
         }
-        this.rules[key] = getStylesFn(this.config, StyleUtils, css);
+        this.rules[key] = getStylesFn(this.config, css, StyleUtils);
         return this.rules[key];
     }
 

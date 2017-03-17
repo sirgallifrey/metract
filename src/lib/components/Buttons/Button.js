@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { themed } from '../../Theme';
 
-export const getStyles = (conf, utils, css) => {
+export const getStyles = (conf, css, utils) => {
 
     const button = {};
 
@@ -65,9 +65,9 @@ export const getStyles = (conf, utils, css) => {
     return button;
 };
 
-const Button = themed('Button', getStyles)((props) => {
+const Button = (props) => {
 
-    const { className, color, big, block, ...rest } = props;
+    const { className, color, big, block, rules, ...rest } = props;
 
     let _classNames = classNames({
         [props.rules.default]: true,
@@ -82,6 +82,6 @@ const Button = themed('Button', getStyles)((props) => {
             {props.children}
         </button>
     );
-});
+};
 
-export default Button;
+export default themed('Button', getStyles)(Button);
