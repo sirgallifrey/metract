@@ -1,87 +1,55 @@
 import React from 'react';
-import classNames from 'classnames';
-import { themed } from '../../Theme';
+import styled from 'styled-components';
+import utils from '../../styleUtils';
 
-export const getStyles = (conf, css, utils) => {
+const buttonColor = (props) => {
 
-    const button = {};
+	const {bgColor, color} = props.theme.buttons.colors[props.color !== undefined ? props.color : 'default'];
 
-    button.default = css({
-        'backgroundColor': conf.defaults.Button.bgColor,
-        'padding': `${conf.spacings['1']/conf.defaults.fontSize}rem ${conf.spacings['2']/conf.defaults.fontSize}rem`,
-        'borderRadius': conf.defaults.borderRadius,
-        'borderColor': conf.defaults.Button.borderColor,
-        'borderStyle': 'solid',
-        'borderWidth': conf.defaults.Button.borderWidth,
-        'color': conf.defaults.Button.color,
-        '&:focus': {
-            'outline': 'none',
-            'boxShadow': `0 0 0.01pt 1px ${utils.shadeColor(conf.defaults.Button.bgColor, -0.25)}`,
-        },
-        '&:active': {
-            'backgroundColor': utils.shadeColor(conf.defaults.Button.bgColor, -0.08),
-            'boxShadow': `0 0 0.01pt 1px ${utils.shadeColor(conf.defaults.Button.bgColor, -0.25)}`,
-            'outline': 'none'
-        },
-        '&:active:focus': {
-            'boxShadow': `${conf.shadowsInset['2']}, 0 0 0.01pt 1px ${utils.shadeColor(conf.defaults.Button.bgColor, -0.25)}`,
-            'outline': 'none'
+	return `
+        background-color: ${bgColor};
+        border-color: ${utils.shadeColor(bgColor, -0.15)};
+        color: ${color};
+
+        &:active {
+			box-shadow: ${props.theme.shadowsInset['2']};
+			background-color: ${utils.shadeColor(bgColor, -0.15)};
+			outline: none;
         }
-    });
-
-    const buttonColorMixin = (bgColor, color) => ({
-        'backgroundColor': bgColor,
-        'borderColor': utils.shadeColor(bgColor, -0.15),
-        'color': color,
-        '&:active': {
-            'backgroundColor': utils.shadeColor(bgColor, -0.15)
-        },
-        '&:focus': {
-            'outline': 0,
-            'boxShadow': conf.defaults.outline
-        },
-        '&:active:focus': {
-            'boxShadow': `${conf.shadowsInset['2']}, 0 0 0.01pt 1px ${utils.shadeColor(bgColor, -0.25)}`,
+        &:active:focus {
+            box-shadow: ${props.theme.shadowsInset['2']}, ${props.theme.defaults.outline};
         }
-    });
+    `};
 
-    //TODO: font size and padding could come from configs also
-    button.big = css({
-        'fontSize': '1.25rem',
-        'padding': `${conf.spacings['2']/conf.defaults.fontSize}rem ${conf.spacings['3']/conf.defaults.fontSize}rem`,
-    });
+const BaseButton = styled.button`
+	background-color: pink;
+	padding: ${ props => `${props.theme.spacings['1']/props.theme.defaults.fontSize}rem ${props.theme.spacings['2']/props.theme.defaults.fontSize}rem`};
+    borderRadius: ${props => props.theme.defaults.borderRadius}px;
+    borderStyle: solid;
+    borderWidth: ${props => props.theme.buttons.borderWidth};
+	outline: none;
+	width: ${props => props.block !== undefined ? '100%' : 'initial'};
+	&:focus {
+		box-shadow: ${props => props.theme.defaults.outline};
+	}
+	${props => buttonColor(props)}
 
-    button.block = css({
-        'width': '100%'
-    });
-    
-    button.colors = {};
-    Object.keys(conf.defaults.Button.colors).forEach((name) => {
-
-        const def = conf.defaults.Button.colors[name];
-        button.colors[name] = css(buttonColorMixin(def.bgColor, def.color));
-    });
-
-    return button;
-};
+	${ props => {
+		if (props.big === undefined) return;
+		return `
+		font-size: 1.25rem;
+        padding: ${props.theme.spacings['2']/props.theme.defaults.fontSize}rem ${props.theme.spacings['3']/props.theme.defaults.fontSize}rem;
+		`}
+	}
+`;
 
 const Button = (props) => {
 
-    const { className, color, big, block, rules, ...rest } = props;
-
-    let _classNames = classNames({
-        [props.rules.default]: true,
-        [props.rules.colors[props.color]]: color,
-        [props.rules.big]: big,
-        [props.rules.block]: block,
-        className
-    });
-
     return (
-        <button className={_classNames} {...rest}>
+        <BaseButton {...props}>
             {props.children}
-        </button>
+        </BaseButton>
     );
 };
 
-export default themed('Button', getStyles)(Button);
+export default Button;

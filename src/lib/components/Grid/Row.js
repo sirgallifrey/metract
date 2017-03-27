@@ -1,41 +1,38 @@
 import React from 'react';
-import classNames from 'classnames';
-import { themed } from '../../Theme';
+import styled from 'styled-components';
 
-const getStyles = (conf, css, util) => {
+const RowBase = styled.div`
+	zoom: 1;
+	list-styleType: none;
+	padding: 0;
+	margin: 0;
+	margin-left: -${props => props.theme.grid.cellPadding / props.theme.defaults.fontSize}rem;
+	margin-right: -${props => props.theme.grid.cellPadding / props.theme.defaults.fontSize}rem;
+	&, &:after, &:before {
+		box-sizing: border-box;
+	}
+	&:after, &:before {
+		display: table;
+		content: close-quote;
+		line-height: 0;
+	},
+	&:after {
+		clear: both;
+	},
+	& > & {
+		clear: none;
+		float: left;
+		margin: 0!important; /*TODO: check it this is necessary*/
+	}
+`;
 
-    return css({
-        zoom: 1,
-        listStyleType: 'none',
-        padding: 0,
-        margin: '0',
-        marginLeft: `-${conf.grid.cellPadding / conf.defaults.fontSize}rem`,
-        marginRight: `-${conf.grid.cellPadding / conf.defaults.fontSize}rem`,
-        '&, &:after, &:before': {
-            'boxSizing': 'border-box'
-        },
-        '&:after, &:before': {
-            display: 'table',
-            content: 'close-quote',
-            lineHeight: 0
-        },
-        '&:after': {
-            clear: 'both'
-        },
-        '& > &': {
-            clear: 'none',
-            float: 'left',
-            margin: '0!important' //TODO: check it this is necessary
-        }
-    });
-};
+        
+export default (props) => {
 
-export default themed('Row', getStyles)((props) => {
-
-    const { rules, className, ...rest } = props;
+    const { className, ...rest } = props;
     return (
-        <div className={classNames(props.rules.toString(), props.className)} {...rest}>
+        <RowBase className={props.className} {...rest}>
             {props.children}
-        </div>
+        </RowBase>
     );
-});
+};

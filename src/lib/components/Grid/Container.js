@@ -1,25 +1,21 @@
 import React from 'react';
-import classnames from 'classnames';
-import { themed } from '../../Theme';
+import styled from 'styled-components';
 
-export const getStyles = (conf, css) => {
-
-    return css({
-        boxSizing: 'border-box',
-        margin: 'auto',
-        paddingLeft: `${conf.grid.cellPadding / conf.defaults.fontSize}rem`,
-        paddingRight: `${conf.grid.cellPadding / conf.defaults.fontSize}rem`,
-    });
-}
+const ContainerBase = styled.div`
+	box-sizing: border-box;
+	margin: auto;
+	padding-left: ${props => props.theme.grid.cellPadding / props.theme.defaults.fontSize}rem;
+	padding-right: ${props => props.theme.grid.cellPadding / props.theme.defaults.fontSize}rem;
+`;
 
 const Container = (props) => {
 
-    const { rules, className, ...rest } = props;
+    const { className, ...rest } = props;
     return (
-        <div className={classnames(props.rules.toString(), props.className)} {...rest}>
+        <ContainerBase className={props.className} {...rest}>
             {props.children}
-        </div>
+        </ContainerBase>
     );
 };
 
-export default themed('Container', getStyles)(Container);
+export default Container;

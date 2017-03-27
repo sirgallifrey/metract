@@ -1,54 +1,43 @@
 import React from 'react';
-import classnames from 'classnames';
-import { themed } from '../../Theme';
+import styled from 'styled-components';
 
-export const getStyles = (conf, css, util) => {
+const applyBreakpoints = (props) => {
 
-    const rules = {};
+	let rules = '';
 
-    rules.col = css({
-        float: 'left',
-        width: '100%',
-        minHeight: '1px',
-        paddingLeft: `${conf.grid.cellPadding / conf.defaults.fontSize}rem`,
-        paddingRight: `${conf.grid.cellPadding / conf.defaults.fontSize}rem`,
-        userSelect: 'none',
-        '&, &:after, &:before': {
-            boxSizing: 'border-box'
-        }
-    });
-
-    rules.breakpoints = {};
-    Object.keys(conf.breakpoints).forEach((bp) => {
-
-        rules.breakpoints[bp] = {};
-        for (let i = 1; i <= conf.grid.base; i ++ ) {
-
-            rules.breakpoints[bp][i] = css({
-                [`@media(min-width: ${conf.breakpoints[bp]}px)`]: {
-                    width: `${(i / conf.grid.base) * 100}%`
-                }
-            });
-        }
-
-    });
-    return rules;
-}
-
-export default themed('Col', getStyles)((props) => {
-    
-    const breakpoints = {};
-    ['l', 'm', 's', 'xs', 'xxs'].forEach((bp) => {
+	Object.keys(props.theme.breakpoints).forEach((bp) => {
 
         if (props[bp]) {
-            breakpoints[props.rules.breakpoints[bp][props[bp]].toString() ] = true;
-        }
+			rules += `
+				@media(min-width: ${props.theme.breakpoints[bp]}px) {
+                    width: ${(props[bp] / props.theme.grid.base) * 100}%;
+                }
+			`;
+		}
     });
+	return rules;
+};
 
-    const { rules, className, l, m, s, xs, xxs, ...rest } = props;
+const BaseCol = styled.div`
+	float: left;
+	width: 100%;
+	min-height: 1px;
+	padding-left: ${props => props.theme.grid.cellPadding / props.theme.defaults.fontSize}rem;
+	padding-right: ${props => props.theme.grid.cellPadding / props.theme.defaults.fontSize}rem;
+	user-select: none;
+
+	&, &:after, &:before {
+		box-sizing: border-box;
+	}
+	${props => applyBreakpoints(props)}
+`;
+
+export default (props) => {
+
+    const { className, ...rest } = props;
     return (
-        <div className={classnames(props.rules.col.toString(), breakpoints, props.className)} {...rest}>
+        <BaseCol className={props.className} {...rest}>
             {props.children}
-            </div>
+		</BaseCol>
     );
-});
+};
